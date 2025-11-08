@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { TextField, InputAdornment, Paper } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAnimeList, setSearchQuery } from "../slices/animeSlice";
+import { fetchAnimeList, resetAnimeList, setSearchQuery } from "../slices/animeSlice";
 import { AppDispatch, RootState } from "../store";
 
 const SearchBar: React.FC = () => {
@@ -12,7 +12,8 @@ const SearchBar: React.FC = () => {
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      dispatch(fetchAnimeList(query));
+          dispatch(resetAnimeList());
+         dispatch(fetchAnimeList({ query, page: 1 }));
     }, 250); // debounce
 
     return () => clearTimeout(handler);

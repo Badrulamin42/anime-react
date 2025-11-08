@@ -35,22 +35,6 @@ const App: React.FC = () => {
     }), []
   );
 
-  const searchAnime = useCallback(async (query: string) => {
-    if (!query.trim()) return;
-    setLoading(true);
-    try {
-      const response = await fetch(
-        `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(query)}&limit=12`
-      );
-      const data = await response.json();
-      setAnimeList(data.data || []);
-    } catch (error) {
-      console.error("Failed to fetch anime:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
@@ -72,6 +56,7 @@ const App: React.FC = () => {
                       <CircularProgress color="primary" />
                     </Box>
                   ) : (
+                    
                     <AnimeList />
                   )}
                 </>

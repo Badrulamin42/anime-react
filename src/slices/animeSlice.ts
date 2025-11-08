@@ -4,22 +4,33 @@ interface AnimeState {
   animeList: any[];
   selectedAnime: any | null;
   loading: boolean;
-  searchQuery: string; // add this
+  searchQuery: string;
+  page: number;
+  hasMore: boolean;
 }
 
 const initialState: AnimeState = {
   animeList: [],
   selectedAnime: null,
   loading: false,
-   searchQuery: "", // default empty
+  searchQuery: "",
+  page: 1,
+  hasMore: true,
 };
 
-export const fetchAnimeList = createAsyncThunk('anime/fetchList', async (query: string) => {
-  const res = await fetch(`https://api.jikan.moe/v4/anime?q=${query}&limit=10`);
-  const data = await res.json();
-  return data.data;
-});
+// Fetch anime list with query and page
+export const fetchAnimeList = createAsyncThunk(
+  "anime/fetchAnimeList",
+  async ({ query, page }: { query: string; page: number }) => {
+    const res = await fetch(`https://api.jikan.moe/v4/anime?q=${query}&page=${page}`);
+    const data = await res.json();
 
+    
+    return data.data;
+  }
+);
+
+// Fetch detail
 export const fetchAnimeDetail = createAsyncThunk('anime/fetchDetail', async (id: string) => {
   const res = await fetch(`https://api.jikan.moe/v4/anime/${id}`);
   const data = await res.json();
@@ -30,26 +41,45 @@ const animeSlice = createSlice({
   name: 'anime',
   initialState,
   reducers: {
+    resetAnimeList(state) {
+      state.animeList = [];
+      state.page = 1;
+      state.hasMore = true;
+    },
     setSelectedAnime(state, action: PayloadAction<any>) {
       state.selectedAnime = action.payload;
     },
-      setSearchQuery(state, action: PayloadAction<string>) {
+    setSearchQuery(state, action: PayloadAction<string>) {
       state.searchQuery = action.payload;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchAnimeList.pending, (state) => { state.loading = true; });
-    builder.addCase(fetchAnimeList.fulfilled, (state, action) => {
-      state.animeList = action.payload;
-      state.loading = false;
-    });
-    builder.addCase(fetchAnimeDetail.pending, (state) => { state.loading = true; });
-    builder.addCase(fetchAnimeDetail.fulfilled, (state, action) => {
-      state.selectedAnime = action.payload;
-      state.loading = false;
-    });
+    builder
+      .addCase(fetchAnimeList.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchAnimeList.fulfilled, (state, action) => {
+        if (action.payload.length === 0) {
+          state.hasMore = false;
+        } else {
+          state.animeList = [...state.animeList, ...action.payload];
+          state.page += 1;
+        }
+        state.loading = false;
+      })
+      .addCase(fetchAnimeList.rejected, (state) => {
+        state.loading = false;
+        state.hasMore = false;
+      })
+      .addCase(fetchAnimeDetail.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchAnimeDetail.fulfilled, (state, action) => {
+        state.selectedAnime = action.payload;
+        state.loading = false;
+      });
   },
 });
 
-export const { setSelectedAnime, setSearchQuery} = animeSlice.actions;
+export const { setSelectedAnime, setSearchQuery, resetAnimeList } = animeSlice.actions;
 export default animeSlice.reducer;
