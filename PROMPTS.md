@@ -9,3 +9,4 @@ first show title, a bit space break line follow by rating episodes, rating and e
 how can i use redux for this app
 after clicked detail page in animelist and go back to animelist after landed detailepage search bar still save the query
 implement inifitescroll
+implement skeleton loading
