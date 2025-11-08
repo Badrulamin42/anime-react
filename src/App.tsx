@@ -1,22 +1,10 @@
-import React, { useState, useMemo } from "react";
-import { Container, Typography, Box, CircularProgress, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import React, { useMemo } from "react";
+import { Container, Typography, Box, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SearchBar from "./components/SearchBar";
 import AnimeList from "./components/AnimeList";
 import AnimeDetail from "./pages/AnimeDetail";
 
-interface Anime {
-  mal_id: number;
-  title: string;
-  url: string;
-  type: string;
-  duration: string;
-  images: { jpg: { image_url: string } };
-  episodes?: number;
-  score?: number;
-  synopsis?: string;
-  season?: string;
-}
 
 const App: React.FC = () => {
 
