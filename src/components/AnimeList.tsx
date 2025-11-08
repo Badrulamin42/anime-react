@@ -71,14 +71,14 @@ const AnimeList: React.FC = () => {
   // }
 
   // Show "No results" only when we have searched but nothing returned
-  if (!animeList.length && searchQuery !== "") {
+  if (animeList.length === 0 && searchQuery !== "" && !loading) {
     return (
       <Typography align="center" color="text.secondary" mt={4}>
         No results found. Try searching for something!
       </Typography>
     );
   }
-
+console.log(animeList.length,'animeList.length')
   return (
     <Grid container spacing={3}>
       {animeList.map((anime, index) => {
