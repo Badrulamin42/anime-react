@@ -10,7 +10,7 @@ import { fetchAnimeList } from "../slices/animeSlice";
 const AnimeList: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const { animeList, loading, page, hasMore, searchQuery } = useSelector(
+  const { animeList, loading, page, hasMore, searchQuery, error } = useSelector(
     (state: RootState) => state.anime
   );
 
@@ -37,9 +37,16 @@ const AnimeList: React.FC = () => {
     const words = text.split(" ");
     return words.length <= 75 ? text : words.slice(0, 75).join(" ") + "...";
   };
+  
+  if (error) {
+    return (
+      <Typography align="center" color="error" mt={4}>
+        {error}
+      </Typography>
+    );
+  }
 
-
-   // Show skeletons if loading or if animeList is empty on first fetch
+  // Show skeletons if loading or if animeList is empty on first fetch
   if (loading || (!animeList.length && searchQuery === "")) {
     return (
       <Grid container spacing={3}>

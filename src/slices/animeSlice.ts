@@ -7,6 +7,7 @@ interface AnimeState {
   searchQuery: string;
   page: number;
   hasMore: boolean;
+  error: string | null; // new
 }
 
 const initialState: AnimeState = {
@@ -16,6 +17,7 @@ const initialState: AnimeState = {
   searchQuery: "",
   page: 1,
   hasMore: true,
+  error: null,
 };
 
 // Fetch anime list with query and page
@@ -57,6 +59,7 @@ const animeSlice = createSlice({
     builder
       .addCase(fetchAnimeList.pending, (state) => {
         state.loading = true;
+         state.error = null; // reset error
       })
       .addCase(fetchAnimeList.fulfilled, (state, action) => {
         if (action.payload.length === 0) {
@@ -67,9 +70,10 @@ const animeSlice = createSlice({
         }
         state.loading = false;
       })
-      .addCase(fetchAnimeList.rejected, (state) => {
+      .addCase(fetchAnimeList.rejected, (state, action) => {
         state.loading = false;
         state.hasMore = false;
+        state.error = action.error.message || "Failed to fetch anime list"; // store error
       })
       .addCase(fetchAnimeDetail.pending, (state) => {
         state.loading = true;
