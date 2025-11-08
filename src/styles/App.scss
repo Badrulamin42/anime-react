@@ -1,0 +1,14 @@
+
+@import './_globals.scss'; 
+
+.container {
+    width: 1200px;      /* Set width to 1200px */
+    margin: 0 auto;     /* Center the container horizontally */
+    padding: 20px;      /* Add some padding inside the container */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center; /* Center the text */
+  }
+  

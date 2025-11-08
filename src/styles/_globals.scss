@@ -1,0 +1,31 @@
+// src/styles/_globals.scss
+
+// Global Variables
+$primary-color: #663fb2;
+$secondary-color: rgb(178, 44, 235);
+$font-family: 'Arial', sans-serif;
+$font-size-base: 16px;
+
+// Global Reset (optional)
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: $font-family;
+}
+
+body {
+  background-color: #f4f4f4;
+  color: #333;
+  font-size: $font-size-base;
+  line-height: 1.5;
+}
+
+// Utility classes
+.text-center {
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}

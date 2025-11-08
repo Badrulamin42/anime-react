@@ -1,0 +1,88 @@
+import React, { useState, useCallback, useMemo } from "react";
+import { Container, Typography, Box, CircularProgress, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import SearchBar from "./components/SearchBar";
+import AnimeList from "./components/AnimeList";
+import AnimeDetail from "./pages/AnimeDetail";
+
+interface Anime {
+  mal_id: number;
+  title: string;
+  url: string;
+  type: string;
+  duration: string;
+  images: { jpg: { image_url: string } };
+  episodes?: number;
+  score?: number;
+  synopsis?: string;
+  season?: string;
+}
+
+const App: React.FC = () => {
+  const [animeList, setAnimeList] = useState<Anime[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const darkTheme = useMemo(() =>
+    createTheme({
+      palette: {
+        mode: "dark",
+        primary: { main: "#f23d89" },
+        background: { default: "#0d0d0d", paper: "#181818" },
+        text: { primary: "#ffffff", secondary: "#b0b0b0" },
+      },
+      shape: { borderRadius: 12 },
+      typography: { fontFamily: `"Poppins", "Roboto", sans-serif` },
+    }), []
+  );
+
+  const searchAnime = useCallback(async (query: string) => {
+    if (!query.trim()) return;
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(query)}&limit=12`
+      );
+      const data = await response.json();
+      setAnimeList(data.data || []);
+    } catch (error) {
+      console.error("Failed to fetch anime:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  return (
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <Router>
+        <Container maxWidth="lg" sx={{ py: 6, minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <Typography variant="h4" align="center" fontWeight={700} color="primary" sx={{ mb: 3 }}>
+                    Anime Search App
+                  </Typography>
+                  <Box sx={{ mb: 4 }}>
+                    <SearchBar  />
+                  </Box>
+                  {loading ? (
+                    <Box sx={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", mt: 5 }}>
+                      <CircularProgress color="primary" />
+                    </Box>
+                  ) : (
+                    <AnimeList />
+                  )}
+                </>
+              }
+            />
+            <Route path="/anime/:id" element={<AnimeDetail />} />
+          </Routes>
+        </Container>
+      </Router>
+    </ThemeProvider>
+  );
+};
+
+export default App;
