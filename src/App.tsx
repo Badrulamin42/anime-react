@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { Container, Typography, Box, CircularProgress, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SearchBar from "./components/SearchBar";
@@ -19,8 +19,7 @@ interface Anime {
 }
 
 const App: React.FC = () => {
-  const [animeList, setAnimeList] = useState<Anime[]>([]);
-  const [loading, setLoading] = useState(false);
+
 
   const darkTheme = useMemo(() =>
     createTheme({
@@ -51,14 +50,9 @@ const App: React.FC = () => {
                   <Box sx={{ mb: 4 }}>
                     <SearchBar  />
                   </Box>
-                  {loading ? (
-                    <Box sx={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", mt: 5 }}>
-                      <CircularProgress color="primary" />
-                    </Box>
-                  ) : (
-                    
+               
                     <AnimeList />
-                  )}
+               
                 </>
               }
             />
