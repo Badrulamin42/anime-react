@@ -5,3 +5,6 @@ npm run dev
 - skeleton loading
 - infinite scroll
 - error handling 
+- animation hover effect
+- mobile responsive
+
