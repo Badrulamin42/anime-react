@@ -47,28 +47,28 @@ const AnimeList: React.FC = () => {
   }
 
   // Show skeletons if loading or if animeList is empty on first fetch
-  if (loading || (!animeList.length && searchQuery === "")) {
-    return (
-      <Grid container spacing={3}>
-        {Array.from(new Array(6)).map((_, index) => (
-          <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index}>
-            <Card sx={{ borderRadius: 1, boxShadow: 3 }}>
-              <Skeleton variant="rectangular" height={300} width="100%" />
-              <CardContent>
-                <Skeleton variant="text" height={30} />
-                <Box display="flex" gap={1} mt={1}>
-                  <Skeleton variant="rectangular" width={75} height={24} sx={{ borderRadius: 1 }} />
-                  <Skeleton variant="rectangular" width={75} height={24} sx={{ borderRadius: 1 }} />
-                </Box>
-                <Skeleton variant="text" height={20} sx={{ mt: 1 }} />
-                <Skeleton variant="text" height={20} sx={{ mt: 0.5 }} />
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    );
-  }
+  // if (loading || (!animeList.length && searchQuery === "")) {
+  //   return (
+  //     <Grid container spacing={3}>
+  //       {Array.from(new Array(6)).map((_, index) => (
+  //         <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index}>
+  //           <Card sx={{ borderRadius: 1, boxShadow: 3 }}>
+  //             <Skeleton variant="rectangular" height={300} width="100%" />
+  //             <CardContent>
+  //               <Skeleton variant="text" height={30} />
+  //               <Box display="flex" gap={1} mt={1}>
+  //                 <Skeleton variant="rectangular" width={75} height={24} sx={{ borderRadius: 1 }} />
+  //                 <Skeleton variant="rectangular" width={75} height={24} sx={{ borderRadius: 1 }} />
+  //               </Box>
+  //               <Skeleton variant="text" height={20} sx={{ mt: 1 }} />
+  //               <Skeleton variant="text" height={20} sx={{ mt: 0.5 }} />
+  //             </CardContent>
+  //           </Card>
+  //         </Grid>
+  //       ))}
+  //     </Grid>
+  //   );
+  // }
 
   // Show "No results" only when we have searched but nothing returned
   if (!animeList.length && searchQuery !== "") {
